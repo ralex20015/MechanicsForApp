@@ -1,6 +1,7 @@
 package me.armandosalazar.mechanicsforapp.dao;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import me.armandosalazar.mechanicsforapp.models.Mechanic;
 import me.armandosalazar.mechanicsforapp.models.User;
+import me.armandosalazar.mechanicsforapp.models.Vehicle;
 
 public class DAO {
     private static DAO instance;
@@ -45,6 +47,18 @@ public class DAO {
         return gson.fromJson(sharedPreferences.getString("users", ""), type);
     }
 
+    public void saveUser(User user) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("user", gson.toJson(user));
+        editor.apply();
+    }
+
+    public User getSaveUser() {
+        Type type = new TypeToken<User>() {
+        }.getType();
+        return gson.fromJson(sharedPreferences.getString("user", ""), type);
+    }
+
     // TODO: Implement DAO methods for Mechanic
     public void createMechanic(Mechanic mechanic) {
         ArrayList<Mechanic> mechanics = getMechanics();
@@ -68,20 +82,44 @@ public class DAO {
     public User userExist(String email, String password) {
         ArrayList<User> users = getUsers();
         ArrayList<Mechanic> mechanics = getMechanics();
-        for (User user : users
-        ) {
-            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-                return user;
+        Log.e("DAO", "userExist: " + users);
+        Log.e("DAO", "mechanicsExist: " + mechanics);
+        if (users != null) {
+            for (User user : users
+            ) {
+                if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                    return user;
+                }
             }
         }
-        for (Mechanic mechanic : mechanics
-        ) {
-            if (mechanic.getEmail().equals(email) && mechanic.getPassword().equals(password)) {
-                return mechanic;
+        if (mechanics != null) {
+            for (Mechanic mechanic : mechanics
+            ) {
+                if (mechanic.getEmail().equals(email) && mechanic.getPassword().equals(password)) {
+                    return mechanic;
+                }
             }
         }
 
         return null;
+    }
+
+    // TODO: Implement DAO methods for Vehicles
+    public void createVehicle(Vehicle vehicle) {
+        ArrayList<Vehicle> vehicles = getVehicles();
+        if (vehicles == null) {
+            vehicles = new ArrayList<>();
+        }
+        vehicles.add(vehicle);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("vehicles", gson.toJson(vehicles));
+        editor.apply();
+    }
+
+    public ArrayList<Vehicle> getVehicles() {
+        Type type = new TypeToken<ArrayList<Vehicle>>() {
+        }.getType();
+        return gson.fromJson(sharedPreferences.getString("vehicles", ""), type);
     }
 
 }

@@ -56,6 +56,9 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.ViewHold
 
     @Override
     public int getItemCount() {
+        if (vehicles == null){
+            return 0;
+        }
         return vehicles.size();
     }
 }

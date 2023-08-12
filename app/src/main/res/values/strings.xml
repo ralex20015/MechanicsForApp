@@ -9,8 +9,8 @@
     <string name="cancelar">Cancelar</string>
     <string name="folio">Ingrese su folio</string>
     <string name="institution">Ingrese su institución</string>
-    <string name="lastNames">Ingrese sus apellido(s)</string>
-    <string name="names">Ingrese su nombre(s)</string>
+    <string name="username">Ingrese un nombre de usuario</string>
+    <string name="names">Ingrese su nombre completo</string>
     <string name="amount">Ingrese el monto a solicitar</string>
     <string name="register">Registrar</string>
     <string name="clean">Limpiar</string>
@@ -33,4 +33,5 @@
     <string name="rfc">Ingrese su RFC</string>
     <string name="close_session">Cerrar sesión</string>
     <string name="exit">Salir</string>
+    <string name="profile">Profile</string>
 </resources>

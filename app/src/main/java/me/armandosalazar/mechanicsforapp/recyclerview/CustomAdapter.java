@@ -58,7 +58,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.ViewHolder holder, int position) {
         Mechanic mechanic = mechanics.get(position);
-        String name = mechanic.getName() + " " + mechanic.getLastName();
+        String name = mechanic.getName() + " " + mechanic.getUsername();
         holder.mechanicName.setText(name);
         holder.mechanicType.setText(mechanic.getTypeOfMechanic());
     }
@@ -76,7 +76,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         View view = layoutInflater.inflate(R.layout.custom_dialog, null);
 
         // view.findViewById(R.id.imgCustomDialog);
-        String name = mechanic.getName() + " " + mechanic.getLastName();
+        String name = mechanic.getName() + " " + mechanic.getUsername();
         ((TextView) view.findViewById(R.id.mechanic_name_dialog)).setText(name);
         ((TextView) view.findViewById(R.id.mechanic_type_dialog)).setText(mechanic.getTypeOfMechanic());
 //        ((Button) view.findViewById(R.id.btnAcceptDialog)).setText("Agendar");

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -14,14 +13,14 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 
-import me.armandosalazar.mechanicsforapp.dao.DAO;
 import me.armandosalazar.mechanicsforapp.models.Mechanic;
 import me.armandosalazar.mechanicsforapp.models.User;
 
@@ -30,13 +29,15 @@ public class RegisterActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
     private TextInputLayout txtLayoutName, txtLayoutLastName, txtLayoutPass, txtLayoutRepeatPass, txtLayoutEmail, txtLayoutRfc;
-    private TextInputEditText txtName, txtLastName, txtPass, txtRepeatPass, txtEmail, txtRfc;
+    private TextInputEditText txtName, txtUserName, txtPass, txtRepeatPass, txtEmail, txtRfc;
     private CheckBox cbMechanic;
     private Spinner spMechanicType;
     private String previousUsers;
     private int currentId;
     private final String[] typeOfMechanic = {"Seleccione un tipo", "Eléctrico", "General", "Hojalatería y pintura",
             "Mecánico Diesel", "Frenos y transmisión"};
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -54,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
         txtLayoutRfc = findViewById(R.id.txtInputRfc);
 
         txtName = findViewById(R.id.txtName);
-        txtLastName = findViewById(R.id.txtLastName);
+        txtUserName = findViewById(R.id.txtLastName);
         txtEmail = findViewById(R.id.txtNewEmail);
         txtPass = findViewById(R.id.txtNewPass);
         txtRepeatPass = findViewById(R.id.txtRepeatPass);
@@ -101,40 +102,49 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void registerUser(View view) {
         if (allFieldsFilled()) {
+            database = FirebaseDatabase.getInstance();
+
             if (isAMechanic()) {
+                databaseReference = database.getReference("mechanics");
                 int indexSelected = spMechanicType.getSelectedItemPosition();
+                String email = String.valueOf(txtEmail.getText());
+                String password = String.valueOf(txtPass.getText());
+                String username = String.valueOf(txtUserName.getText());
                 Mechanic mechanic = new Mechanic();
                 mechanic.setName(String.valueOf(txtName.getText()));
-                mechanic.setLastName(String.valueOf(txtLastName.getText()));
-                mechanic.setEmail(String.valueOf(txtEmail.getText()));
-                mechanic.setPassword(String.valueOf(txtPass));
+                mechanic.setUsername(String.valueOf(txtUserName.getText()));
+                mechanic.setEmail(email);
+                mechanic.setPassword(password);
                 mechanic.setRegistered(true);
                 mechanic.setRfc(String.valueOf(txtRfc));
                 mechanic.setTypeOfMechanic(typeOfMechanic[indexSelected]);
-                DAO.getInstance(sharedPreferences).createMechanic(mechanic);
-                ArrayList<Mechanic> mechanics = DAO.getInstance(sharedPreferences).getMechanics();
-                for (Mechanic m :
-                        mechanics) {
-                    Log.d("REGISTER", mechanic.getEmail());
+                databaseReference.child(username).setValue(mechanic);
+                Toast.makeText(this, "Registro exitoso!!", Toast.LENGTH_SHORT).show();
+                //change this
+//                DAO.getInstance(sharedPreferences).createMechanic(mechanic);
+//                ArrayList<Mechanic> mechanics = DAO.getInstance(sharedPreferences).getMechanics();
+//                for (Mechanic m :
+//                        mechanics) {
+//                    Log.d("REGISTER", mechanic.getEmail());
+//
+//                }
 
-                }
                 finish();
             }
+            databaseReference = database.getReference("users");
+            String email = String.valueOf(txtEmail.getText());
+            String username = String.valueOf(txtUserName.getText());
             User user = new User();
             user.setName(String.valueOf(txtName.getText()));
-            user.setLastName(String.valueOf(txtLastName.getText()));
-            user.setEmail(String.valueOf(txtEmail.getText()));
+            user.setUsername(username);
+            user.setEmail(email);
             user.setPassword(String.valueOf(txtPass.getText()));
-            user.setRegistered(true);
 
-            DAO.getInstance(sharedPreferences).createUser(user);
+            databaseReference.child(username).setValue(user);
+            Toast.makeText(this, "Registro exitoso!!", Toast.LENGTH_SHORT).show();
+            //Change this
+//            DAO.getInstance(sharedPreferences).createUser(user);
 
-            ArrayList<User> users = DAO.getInstance(sharedPreferences).getUsers();
-            for (User u :
-                    users) {
-                Log.d("REGISTER", u.getEmail());
-
-            }
             finish();
         } else {
             Toast.makeText(this, "Debe llenar todos los campos", Toast.LENGTH_SHORT).show();
@@ -143,12 +153,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean allFieldsFilled() {
         if (isAMechanic()) {
-            return !txtName.getText().toString().equals("") && !txtLastName.getText().toString().equals("") &&
+            return !txtName.getText().toString().equals("") && !txtUserName.getText().toString().equals("") &&
                     !txtEmail.getText().toString().equals("") && !txtPass.getText().toString().equals("") &&
                     !txtRepeatPass.getText().toString().equals("") && !txtRfc.getText().toString().equals("")
                     && spMechanicType.getSelectedItemPosition() != 0;
         } else {
-            return !txtName.getText().toString().equals("") && !txtLastName.getText().toString().equals("") &&
+            return !txtName.getText().toString().equals("") && !txtUserName.getText().toString().equals("") &&
                     !txtEmail.getText().toString().equals("") && !txtPass.getText().toString().equals("") &&
                     !txtRepeatPass.getText().toString().equals("");
         }
@@ -164,7 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
             stringBuilder.append("Nombre: ");
             stringBuilder.append(txtName.getText().toString());
             stringBuilder.append("Apellido(s): ");
-            stringBuilder.append(txtLastName.getText().toString());
+            stringBuilder.append(txtUserName.getText().toString());
             stringBuilder.append("Correo: ");
             stringBuilder.append(txtEmail.getText().toString());
             stringBuilder.append("Password: ");
@@ -181,7 +191,7 @@ public class RegisterActivity extends AppCompatActivity {
             stringBuilder.append("Nombre: ");
             stringBuilder.append(txtName.getText().toString());
             stringBuilder.append("Apellido(s): ");
-            stringBuilder.append(txtLastName.getText().toString());
+            stringBuilder.append(txtUserName.getText().toString());
             stringBuilder.append("Correo: ");
             stringBuilder.append(txtEmail.getText().toString());
             stringBuilder.append("Password: ");

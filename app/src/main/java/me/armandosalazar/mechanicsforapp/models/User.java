@@ -6,24 +6,8 @@ public class User implements Serializable {
     private String email;
     private String password;
     private boolean registered;
-    private String lastName;
+    private String username;
     private String name;
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public User() {
         this.email = "none";
         this.password = "none";
@@ -35,15 +19,15 @@ public class User implements Serializable {
         this.password = password;
         this.registered = registered;
         this.name = name;
-        this.lastName = lastName;
+        this.username = username;
     }
 
-    public User(String name, String lastName, String  email, String password, boolean registered) {
+    public User(String name, String username, String  email, String password, boolean registered) {
         this.email = email;
         this.password = password;
         this.registered = registered;
         this.name = name;
-        this.lastName = lastName;
+        this.username = username;
     }
 
     public String getEmail() {
@@ -68,5 +52,20 @@ public class User implements Serializable {
 
     public void setRegistered(boolean registered) {
         this.registered = registered;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

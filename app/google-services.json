@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "914569327150",
+    "project_id": "mechanics-for-app",
+    "storage_bucket": "mechanics-for-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914569327150:android:4c327cde2075149acf65bf",
+        "android_client_info": {
+          "package_name": "me.armandosalazar.mechanicsforapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914569327150-trf9sh6rjdmnd8veqjid7lf0ksj9urtl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA58JsIZP9CJwexBehSrdgZykmBydevm8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914569327150-trf9sh6rjdmnd8veqjid7lf0ksj9urtl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

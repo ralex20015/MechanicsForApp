@@ -1,9 +1,9 @@
 package me.armandosalazar.mechanicsforapp;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +39,8 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // init share preferences
-        sharedPreferences = getSharedPreferences("mechanics.dat", MODE_PRIVATE);
-
+        //Change this for getting all the data from DB.
+        sharedPreferences = getSharedPreferences("users.dat", MODE_PRIVATE);
         binding = ActivitySidemenuBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         user = (User) getIntent().getSerializableExtra("user");
@@ -50,18 +50,12 @@ public class MenuActivity extends AppCompatActivity {
         String fullName = "";
 
         //Obtenemos datos del usuario
-        if (user == null) {
-            SharedPreferences prefs = getSharedPreferences("user.dat", MODE_PRIVATE);
-            nameOfUser = prefs.getString("name", "");
-            lastNameOfUser = prefs.getString("lastName", "");
-            email = prefs.getString("email", "");
-            fullName = nameOfUser + " " + lastNameOfUser;
-        } else {
-            nameOfUser = user.getName();
-            lastNameOfUser = user.getLastName();
-            email = user.getEmail();
-            fullName = nameOfUser + " " + lastNameOfUser;
-        }
+
+        nameOfUser = user.getName();
+        lastNameOfUser = user.getUsername();
+        email = user.getEmail();
+
+        fullName = nameOfUser + " " + lastNameOfUser;
 
 
         setSupportActionBar(binding.appBarMenu.toolbar);

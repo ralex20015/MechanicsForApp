@@ -11,4 +11,9 @@
         android:orderInCategory="100"
         android:title="@string/exit"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/itmProfile"
+        android:title="@string/profile"
+        android:icon="@drawable/baseline_settings_24"
+        app:showAsAction="ifRoom"/>
 </menu>
